@@ -53,7 +53,50 @@ app.post('/addTasks',async(req,res)=>{
     })
 
     
+    app.get('/tasks/:_id',async(req,res)=>{
 
+        const{ _id }= req.params
+        
+        const findOneTask = await Task.findOne({ _id:_id} )
+    
+        res.json({
+            data:findOneTask,
+            message:"fetch task successfully"
+        })
+    
+    
+    })
+    
+    
+    app.delete('/tasks/:_id',async(req,res)=>{
+    
+        const{ _id }= req.params
+    
+        await Task.deleteOne({_id:_id})
+        
+        res.json({
+            success:true,
+            message:"Task delete successfully"
+        })
+    
+    })
+    app.put('/tasks/:_id', async(req,res)=>{
+
+        const { _id } = req.params
+    
+        const { title,msg,pri } = req.body;
+    
+         await Task.updateOne({ _id: _id} , {$set:{
+            title,msg,pri
+        }})
+    
+        const newupdatedTask = await Task.findById( _id )
+    
+        res.json({
+            data:newupdatedTask,
+            message:"updated task successfully"
+        })
+    })
 
 
 
